@@ -1,8 +1,8 @@
-#' Shannon's entropy or Shannon's information
+#' Shannon's entropy
 #'
 #' It calculates Shannon's entropy of a linguistic element such as word or letter, provided a sample space ("text").
 #'
-#' @param text Text vector, whose elements can be phrases or texts
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column!
 #' @param level "word" o "letter"
 #' @return Entropy in bits
 #' @examples
@@ -16,41 +16,27 @@
 #'
 #' @export
 
-shannon_entropy <- function(text, level = c("word", "letter")) {
+shannon_entropy <- function(input, level = c("word", "letter")) {
   level <- match.arg(level)
 
-  # Check if the input is an actual text vector
-  if (!is.character(text)) stop("Remember! Input must be a text vector. Check ?shannon_entropy for further indications.")
-  text <- text[!is.na(text)]
-  if (length(text) == 0 || all(text == "")) return(NA_real_)
+  # input_handling()! We handle the data introduced in a standard way
+  input <- input_handling(input, level = level)
 
-  # Turn capital letters into lowercase
-  elements <- tolower(text) # Turn capital letters into lowercase
+  # We extract from the data frame that outputs input_handling() tokens and frequencies
+  elements <- input$elements
+  freqs <- input$freqs
 
-  if (level == "word") {
-   # Tokenization of words
-    elements <- unlist(strsplit(elements, "\\W+"))
-   # Tokenization of letters
-  } else {
-    elements <- unlist(strsplit(elements, ""))
+  # Shannon entropy formula
+   return(-sum(freqs * log2(freqs)))
   }
 
-  # Ignore null elements
-  elements <- elements[elements != ""]
-
-  # Obtain frequencies
-  freqs <- table(elements) / length(elements)
-
-  # Shannon's entropy formula
-  -sum(freqs * log2(freqs))
-}
 
 #' Cross entropy between texts
 #'
 #' It calculates the cross entropy (that is, H(P, Q), where P is the local distribution (text_p) and Q is a global distribution
 #'
-#' @param text_p local text
-#' @param text_q global text, or reference
+#' @param text_p local text, or local data frame
+#' @param text_q global text, or local data frame
 #' @param level "word" or "letter"
 #' @return Cross entropy in bits
 #' @examples
@@ -71,39 +57,45 @@ shannon_entropy <- function(text, level = c("word", "letter")) {
 cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
   level <- match.arg(level)
 
-  # Check if the input is an actual text vector
-  if (!is.character(text_p) || !is.character(text_q)) {
-    stop("Remember! Input text_p and text_q must be both a text vector. Check ?cross_entropy for further indications.")
+  # Use input_handling to standardize both sources
+  input_p <- input_handling(text_p, level = level)
+  input_q <- input_handling(text_q, level = level)
+
+  # We grab tokens from the local source
+  elements_p <- input_p$elements
+  elements_q <- input_q$elements
+
+  # And the frequencies too, from both sources!
+  freqs_p <- input_p$freqs
+  freqs_q <- input_q$freqs
+
+  # When we have a text, frequencies are not given. We have, now, to calculate them
+  freqs_p <- if (is.null(input_p$freqs)) {
+    table(elements_p) / length(elements_p)
+  } else {
+    setNames(input_p$freqs, elements_p)
   }
 
-
-  cleanse <- function(text, level) {
-    # Tokenization of words
-    if (level == "word") {
-      unlist(strsplit(tolower(text), "\\W+"))
-    # Tokenization of letters
-    } else {
-      unlist(strsplit(tolower(text), ""))
-    }
+  freqs_q <- if (is.null(input_q$freqs)) {
+    table(elements_q) / length(elements_q)
+  } else {
+    setNames(input_q$freqs, input_q$elements)
   }
 
-  # Cleaning of both local and global sources
-  elems1 <- cleanse(text_p, level)
-  elems2 <- cleanse(text_q, level)
+  # We get tokens from local source
+  words <- names(freqs_p)
+  p <- freqs_p
 
-  # Ignore null elements in both local and global tables
-  elems1 <- elems1[elems1 != ""]
-  elems2 <- elems2[elems2 != ""]
+  # Assign names to Q if not present
+  if (is.null(names(freqs_q))) {
+    names(freqs_q) <- input_q$elements
+  }
 
-  # Definition of local and global probabilities
-  p <- table(elems1) / length(elems1)
-  q <- table(elems2) / length(elems2)
+  # Align Q to P's vocabulary
+  q <- freqs_q[words]
 
-  # We assure that every word in P is in Q
-  words <- names(p)
-  q <- q[words]
 
-  # Apply epsilon smoothing so we avoid log(0)
+  # We apply a small epsilon smoothing where Q is missing
   q[is.na(q)] <- 1e-10
 
   # Cross entropy formula
@@ -114,8 +106,8 @@ cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
 #'
 #' Here we try to measure how much information we obtain from one state of the source and another, which is really useful in classification and in general in information theory apply to language projects
 #'
-#' @param text_p Local source
-#' @param text_q Global source
+#' @param text_p Local source, can be an actual text, or a data frame
+#' @param text_q Global source, can be an actual text, or a data frame
 #' @param level "word" or "letter"
 #' @return Gained information bits, that is: (H(P) - H(P,Q))
 #' @examples
@@ -127,21 +119,46 @@ cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
 #' # Example of comparison between two datasets (selected_piantadosi and heart_of_darkness, available in langstats, remember to load them with data(dataset_name))
 #' data(selected_piantadosi)
 #' data(heart_of_darkness)
-#'
-#'
 #' gain(selected_piantadosi, heart_of_darkness, level = "word")
 #'
 #'
 #' @export
 gain <- function(text_p, text_q, level = c("word", "letter")) {level <- match.arg(level)
-  # Check if the input is an actual text vector
-  if (!is.character(text_p) || !is.character(text_q)) {
-    stop("Remember! Input text_p and text_q must be both a text vector. Check ?gain for further indications.")
-  }
-  # Calculate both Shannon's entropy and cross entropy
-  h_p <- shannon_entropy(text_p, level)
-  h_pq <- cross_entropy(text_p, text_q, level)
 
-  # Information gain wrapped formula
-  h_p - h_pq
+  # Standardize inputs
+  input_p <- input_handling(text_p, level = level)
+  input_q <- input_handling(text_q, level = level)
+
+  # Ensure freqs are present, otherwise compute them
+  if (is.null(input_p$freqs)) {
+    freqs_p <- table(input_p$elements)
+    freqs_p <- freqs_p / sum(freqs_p)
+  } else {
+    freqs_p <- input_p$freqs
+    names(freqs_p) <- input_p$elements
+  }
+
+  if (is.null(input_q$freqs)) {
+    freqs_q <- table(input_q$elements)
+    freqs_q <- freqs_q / sum(freqs_q)
+  } else {
+    freqs_q <- input_q$freqs
+    names(freqs_q) <- input_q$elements
+  }
+
+  # Ensure names exist
+  if (is.null(names(freqs_p))) names(freqs_p) <- input_p$elements
+  if (is.null(names(freqs_q))) names(freqs_q) <- input_q$elements
+
+  # Align vocabulary
+  words <- names(freqs_p)
+  q <- freqs_q[words]
+  q[is.na(q)] <- 1e-10
+
+  # Entropy and cross entropy calculation
+  entropy_p <- -sum(freqs_p * log2(freqs_p))
+  cross_entropy_pq <- -sum(freqs_p * log2(q))
+
+  # Information gain = H(P) - H(P, Q)
+  entropy_p - cross_entropy_pq
 }

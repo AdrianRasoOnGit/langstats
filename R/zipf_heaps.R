@@ -3,7 +3,7 @@
 #' This function grabs a text vector and returns a data frame with the words from the vector, and their frequencies and ranks.
 #'
 #'
-#' @param text Text vector, whose elements can be phrases or documents. Note that both can be just a word
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column!
 #' @return data.frame Here the columns will be: (1) word, (2) frequency, (3) rank
 #' @examples
 #' # Example with a string (Boyle, 1673, found in Fisher (1935))
@@ -15,26 +15,19 @@
 #' zipf(selected_piantadosi)
 #'
 #' @export
-zipf <- function(text) {
+zipf <- function(input, level = c("word", "letter")) {
+  level <- match.arg(level)
 
-  # Check if input is an actual text vector
-  if (!is.character(text)) {
-    stop("Remember! Input must be a text vector. Check ?zipf for further indications.")
-  }
-  text <- text[!is.na(text)]
-  if (length(text) == 0 || all(text == "")) return(NA_real_)
+  # Use input_handling, standard function for the introduction of data into functions from langstats
+  input <- input_handling(input, level = level)
 
-  # Turn capital letters into lowercase and carry out tokenization
-  words <- tolower(unlist(strsplit(text, "\\W+")))
+  # We get from the unified treatment, first, the tokens
+  elements <- input$elements
 
-  # Ignore empty tokens
-  words <- words[words != ""]
+  # And then, the frequencies
+  freq <- sort(table(elements), decreasing = TRUE)
 
-  # Sort of frequencies in decreasing order
-  freq <- sort(table(words), decreasing = TRUE)
-
-  # Building of the data frame, with columns: (1) word, (2) frequency, (3) rank
-
+  # Finally, we build the data frame with the results from the Zipf report
   df <- data.frame( # data frame preparation
     word = names(freq),# first column, word
     frequency = as.integer(freq), # second column, frequency
@@ -47,7 +40,7 @@ zipf <- function(text) {
 #'
 #' Through this function we can estimate the growth of vocabulary with attention to the size of the corpus.
 #'
-#' @param text Text vector, whose elements can be phrases or documents. Note that both can be just a word
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column!
 #' @return data.frame with accumulated size, and quantity of unique words
 #' @examples
 #'
@@ -60,28 +53,25 @@ zipf <- function(text) {
 #' heaps(heart_of_darkness)
 #'
 #' @export
-heaps <- function(text) {
-  if (!is.character(text)) {
+heaps <- function(input, level = c("word", "letter")) {
+  level <- match.arg(level)
 
-    # Check if input is an actual text vector
-    stop("Remember! Input must be a text vector. Check ?heaps for further indications.")
-  }
-  text <- text[!is.na(text)]
-  if (length(text) == 0 || all(text == "")) return(NA_real_)
+  # Use input_handling, standard function for the introduction of data into functions from langstats
+  input <- input_handling(input, level = level)
 
-  # Turn capital letters into lowercase and carry out tokenization
-  words <- tolower(unlist(strsplit(text, "\\W+")))
+  # We get from the unified treatment, first, the tokens
+  elements <- input$elements
 
-  # Ignore empty tokens
-  words <- words[words != ""]
+  # And then, the frequencies
+  freq <- sort(table(elements), decreasing = TRUE)
 
-  # Consideration of cummulative words in each state of the text
-  total <- seq_along(words)
-  vocab <- sapply(seq_along(words), function(i) length(unique(words[1:i])))
+  # Vocabulary growth calculation
+  token_count <- seq_along(elements)
+  vocab <- sapply(token_count, function(i) length(unique(elements[1:i])))
 
   # Building of the data frame
   data.frame(
-    tokens = total,
+    tokens = token_count,
     vocabulary = vocab
   )
 }

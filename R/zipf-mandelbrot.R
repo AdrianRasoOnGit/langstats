@@ -15,10 +15,18 @@
 #' zipf_mandelbrot(selected_piantadosi)
 #' @export
 #' @importFrom stats nls coef
-zipf_mandelbrot <- function(text) {
-  words <- tolower(unlist(strsplit(text, "\\W+")))
-  words <- words[words != ""]
-  freq <- sort(table(words), decreasing = TRUE)
+zipf_mandelbrot <- function(input, level = c("word", "letter")) {
+  # Standardize input
+  input_data <- input_handling(input, level = level)
+  tokens <- input_data$elements
+
+  if (length(tokens) == 0) {
+    warning("No valid tokens were found in the input.")
+    return(NULL)
+  }
+
+  # Create frequency and rank data
+  freq <- sort(table(tokens), decreasing = TRUE)
   df <- data.frame(
     token = names(freq),
     rank = seq_along(freq),
