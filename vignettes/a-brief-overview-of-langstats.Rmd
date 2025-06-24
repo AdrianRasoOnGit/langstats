@@ -1,0 +1,320 @@
+---
+title: "A Brief Overview of langstats"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{a-brief-overview-of-langstats}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this document we present a short tour around the main functions and capabilities of `langstats` through a comprehensive set of given problems and use cases. We encourage the reader to follow the procedures, but we encourage even more to be creative and to find more interesting applications of the function. Here, we will only deal with plain and accessible cases, that guarantees a full grasp of how the package works.
+
+Statistical linguistics, language data science, and natural language
+processing (NLP), among other areas, share the goal of uncovering
+meaningful and structural patterns in language phenomena—starting from
+the distributional hypothesis formulated by Harris (1953). Since the
+emergence of the first linguistic laws, particularly those of George K.
+Zipf (1902–1950), and the early applications of entropy and information
+theory to natural language (e.g. Mandelbrot, 1955), the field—regardless
+of its various names—has been a space for ongoing scientific and
+industrial progress in the study of language.
+
+In `langstats`, we try to offer these tools in a way that any can apply the core ideas of this tradition without getting their hands dirty, and in the case of having a solid grasp of the fundamentals of these tools, we offer a coherent ecosystem in which it is no longer necessary to prepare these functions every time we start a new project. We now review, once again, the functions we already introduced in [README.md](../README.md).
+
+------------------------------------------------------------------------
+
+- **Zipf’s law** (`zipf(text)`):  
+  Expresses a power-law relationship between the frequency of a word and
+  its rank in the corpus. According to Zipf’s law, the most frequent
+  word appears about twice as often as the second most frequent word,
+  three times as often as the third, and so on.
+
+- **Heaps’ law** (`heaps(text)`):  
+  Estimates vocabulary growth based on the number of unique words found
+  in a corpus. The relationship is typically expressed as
+  $V(N) = K N^\beta$, where $V$ is the vocabulary size and $N$ is the
+  number of tokens.
+
+- **Zipf-Mandelbrot’s law** (`zipf_mandelbrot(text)`):  
+  A refinement of Zipf’s law proposed by Mandelbrot (1955) that better
+  models the frequency of low-rank (often grammatical) terms. It adds
+  two parameters: a rank offset $\beta$, and a scaling constant $C$,
+  resulting in a more flexible power-law model.
+
+- **Shannon’s entropy** (`shannon_entropy(text, level)`):  
+  Quantifies the average uncertainty or information contained in a
+  linguistic unit (word or letter), based on its distribution. This
+  metric is computed using:  
+  $$
+  H(X) = -\sum p(x) \log_2 p(x)
+  $$  
+  The function allows analysis at either the word or letter level via
+  the `level` parameter.
+
+- **Cross entropy** (`cross_entropy(text_p, text_q, level)`):  
+  Measures the discrepancy between two probability distributions: one
+  empirical and one modeled. It represents how much additional
+  information is needed to encode data from one distribution using
+  another—commonly used to evaluate language models.
+
+- **Information gain** (`gain(text_p, text_q, level)`):  
+  Defined as the difference between the actual entropy and the cross
+  entropy: $IG = H(P) - H(P, Q)$. It quantifies how much more
+  informative a model is relative to a reference distribution.
+
+- **Bag of Words generator** (`bow(text)`):  
+  A bag of words is a standard NLP object that tallies the frequency of
+  tokens in a text. This function returns a `data.frame` with each
+  token, its absolute count, and its relative proportion.
+
+  Besides, the package comes with some example data to try the features
+  of this resource. Remember to type
+  `data(“name_of_the_data_here”)` before using it! The datasets
+  provided are:
+
+- **Piantadosi Selected Papers** (named: `selected_piantadosi`): A brief collection of five
+  papers of psychologist Steven T. Piantadosi, gathered in his personal
+  website (<https://colala.berkeley.edu/people/piantadosi/>). 
+  
+- **Heart of Darkness** (named: `heart_of_darkness`): The whole Joseph Conrad’s novel. Ideal to try the functions of the package.
+
+  In the following sections of this overview, we will show how to use `langstats`. For further details, you can always
+  run `?function_name` in your R console, or visit our site on [GitHub](github.com/AdrianRasoOnGit/langstats).
+
+## Examples
+
+As promised, here there are the problems from which we will acquire some insight around how `langstats` can be used in a statistical linguistics project.
+
+### Example 1. Zipf's law in Piantadosi's works
+
+Loading the data set `selected_piantadosi`, we can study whether the Zipf's law is satisfied from the lexical distributions of some of this papers. For that, we aim to examine the first 10 ranks from his Zipf distribution. That can be done using, naturally, the function `zipf(text)`, in the manner we show below:
+
+```{r zipf_calculation, echo = TRUE, message = FALSE, eval = TRUE, results = 'hide'}
+library(langstats)
+data("selected_piantadosi")
+
+zipf_calculation <- zipf(selected_piantadosi)
+
+head(zipf_calculation, 10)
+```
+
+The output of the former code is the following:
+
+```{r zipf_head, echo = FALSE}
+
+head(zipf_calculation, 10)
+```
+
+Using the library ``ggplot2``, which is advisable, we are able to showcase the results in a graphic way:
+
+```{r zipf_plot, echo = FALSE, eval = TRUE}
+
+library(ggplot2)
+
+ggplot(zipf_calculation[1:100,], aes(x = rank, y = frequency)) +
+  geom_point(color = "forestgreen") +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(title = "Zipf's Law on Piantadosi's Selected Works",
+       x = "Rank (log scale)",
+       y = "Frequency (log scale)")
+```
+
+Although the plot is clear about the tendency of the data to follow a Zipfean curve, it is interesting to note that the first results are quite diffuse. For this cases, it is useful to use another function from the package, which is `zipf_mandelbrot(text)`, as we will see in the following example.
+
+### Example 2. Zipf's law in Piantadosi's works with Mandelbrot's adjustment
+
+As we said, sometimes low rank terms are not truly captured in the models that relay on classic Zipf's law. In those cases, we apply Mandelbrot's version of the formula, which introduces two more parameters, namely: a rank offset (denoted by \(\beta\)), which accounts for the flattening observed in the highest-frequency words, and a scaling constant (denoted by \(C\)). The formula, then, is defined with the form:
+
+\[
+f(r) = \frac{C}{(r + \beta)^\alpha}
+\]
+
+Here,\(f(r)\) is the frequency of the word with rank \(r\), \(\alpha\) is the exponent (as in Zipf’s law), \(\beta\) adjusts for deviations in high-frequency words, \(C\) scales the distribution.
+
+Mandelbrot's adjustment improves the models delivering a better fit to empirical data. This is particularly useful, as we pointed out, in the first observations from the distributions, those where grammatical terms are found. From a practical view, we can see also note that a Zipf-Mandelbrot approach usually translates in a lower residual error from natural language data, yet sometimes that improvement is not noticeable (Louwerse and Linders, 2023).
+
+Let's see how to apply these ideas to the previous use case issue.
+
+```{r mandelbrot_calculation, echo = TRUE, message = FALSE, eval = FALSE}
+
+zipf_mandelbrot_calculation <- zipf_mandelbrot(selected_piantadosi)
+
+# We should choose just the data to obtain a data frame from the function
+
+zipf_mandelbrot_calculation <- zipf_mandelbrot_calculation$data
+
+head(zipf_mandelbrot_calculation, 10)
+```
+
+The output of the previous code snippet should be something like this:
+
+```{r mandelbrot_calculation_effective, echo = FALSE, message = FALSE, eval = TRUE}
+
+zipf_mandelbrot_calculation <- zipf_mandelbrot(selected_piantadosi)
+
+# We should choose just the data to obtain a data frame from the function
+
+zipf_mandelbrot_calculation <- zipf_mandelbrot_calculation$data
+
+head(zipf_mandelbrot_calculation, 10)
+```
+
+Like we did before, we provide a representation of the first 100 values of the distribution:
+
+```{r mandelbrot_plot, echo = FALSE, eval = TRUE}
+ggplot(zipf_mandelbrot_calculation[1:100,], aes(x = rank, y = frequency)) +
+  geom_point(color = "darkblue") +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(title = "Zipf–Mandelbrot Law on Piantadosi's Selected Works",
+       x = "Rank (log scale)",
+       y = "Frequency (log scale)")
+```
+
+Something we must acknowledge now is that we have not obtained any improvement whatsoever applying Mandelbrot's adjustment. That's because Piantadosi's dataset is not wide enough (83.027 words). Yet, this is still a positive result! `selected_piantadosi` seems to follow Zipf's law without the adjustment, which is economical, and as it has already happened in real applications of this framework (again, Louwerse and Linders, 2023), it's normal that not large linguistic datasets are okay with just using Zipf. We advise the interested user to apply this function to massive samples, like Wikipedia dumps, or their own large samples that may motivate the usage of this function already.
+
+### Example 3. An exploratory information report over Marlow's *Heart of Darkness* journey
+We have developed too some functions to estimate entropy from linguistic data, from `shannon_entropy()`, `cross_entropy()`, `gain()`.
+
+Let's prepare a summary with the results from these functions over Conrad's **Heart of Darkness**, with both levels:
+
+```{r heart_of_darkness_report, echo = TRUE, eval = TRUE, results = "hide", message = FALSE}
+library(langstats)
+data("heart_of_darkness")
+
+# First, let's obtain word entropies
+
+entropy_word <- shannon_entropy(heart_of_darkness, level = "word")
+
+cross_entropy_word <- cross_entropy(heart_of_darkness, selected_piantadosi, level = "word") # We use selected_piantadosi to measure the information cost of the text codification against the former dataset
+
+information_gain_word <- gain(heart_of_darkness, heart_of_darkness, level = "word")
+
+# Now, let's go for the character level
+
+entropy_character <- shannon_entropy(heart_of_darkness, level = "letter")
+
+cross_entropy_character <- cross_entropy(heart_of_darkness, selected_piantadosi, level = "letter") # We use selected_piantadosi to measure the information cost of the text codification against the former dataset
+
+information_gain_character <- gain(heart_of_darkness, heart_of_darkness, level = "letter")
+
+```
+
+Now, let's see the results!
+
+```{r heart_of_darkness_actual_report, echo = FALSE, eval = TRUE, message = FALSE}
+
+cat("Shannon's entropy on word level is", entropy_word, "\n")
+cat("Cross entropy on word level is", cross_entropy_word, "\n")
+cat("Information gain on word level is", information_gain_word, "\n")
+
+cat(rep("-", 40), sep = "", "\n")
+
+cat("Shannon's entropy on character level is", entropy_character, "\n")
+cat("Cross entropy on character level is", cross_entropy_character, "\n")
+cat("Information gain on character level is", information_gain_character, "\n")
+```
+
+With this set of functions, we are able to deliver this sort of reports from any linguistic source.
+
+### Example 4. Heaps' law in *Heart of Darkness*
+Now, we will use `heaps()` to show the vocabulary growth as more new words are introduced in the text. Remember that the formula which describes this behaviour is:
+
+
+\[
+V(N) = K \cdot N^\beta
+\]
+
+In this formula, \(V(N)\) means the number of unique words, \(N\) is the total number of words, and \(K\) and \(\beta\) are constants estimated from data.
+
+Let's peep into *Heart of Darkness* to see this pattern:
+
+```{r heaps_calculation, echo = TRUE, message = FALSE, eval = TRUE, results = 'hide'}
+data("heart_of_darkness")
+
+heaps_calculation <- heaps(heart_of_darkness)
+
+subset(heaps_calculation, heaps_calculation$tokens >= 1000 & heaps_calculation$tokens <= 1050) # We use subset to check values that may be interesting. Note that the first ones of the distribution should not be that illustrative
+```
+
+The results are the following:
+```{r heaps_results, echo = FALSE, message = FALSE, eval = TRUE}
+subset(heaps_calculation, heaps_calculation$tokens >= 1000 & heaps_calculation$tokens <= 1050)
+```
+
+It is, still, not really noteworthy this kind of explorations of Heaps' distributions. We should instead aim to a plot, like the one we provide below:
+
+```{r heaps_plot, echo = FALSE, message = FALSE, eval = TRUE}
+library(ggplot2)
+ggplot(heaps_calculation, aes(x = tokens, y = vocabulary)) +
+  geom_line(color = "darkred", linewidth = 1) +
+  labs(title = "Heaps' Law on Heart of Darkness",
+       x = "Tokens",
+       y = "Vocabulary size") +
+  theme_minimal()
+```
+
+Now it is clearer how *Heart of Darkness* follows this particular linguistic law, using `heaps()` function from the package.
+
+
+### 5. Making a Bag of Words
+Doing a Bag of Words is a regular practice in many fields around language analysis. We will briefly show how we can make one, based on a data frame, with the function `bow()` included in `langstats`.For that, we are using Piantadosi's `selected_piantadosi` once again.
+
+```{r piantadosi_bow_preparation, echo = TRUE, eval = TRUE, message = FALSE, results = 'hide'}
+piantadosi_bow <- bow(selected_piantadosi)
+
+head(piantadosi_bow, 10)
+
+```
+
+Now, we can obtain this output:
+
+```{r piantadosi_bow_result, echo = FALSE, eval = TRUE, message = FALSE}
+
+head(piantadosi_bow, 10)
+
+```
+
+This resource comes handy when we want just a general report over the ocurrences of words on a text or a corpus. From the gathered data, we can conduct many analysis, even from the default functions of R, naturally. We can, in this sense, build a summary:
+
+```{r piantadosi_bow_summary, echo = FALSE, eval = TRUE, message = FALSE}
+
+summary(piantadosi_bow)
+
+```
+
+We can even do hypothesis testing over linguistic distributions, like for example checking whether the particular mean and standard deviation of a term (let's say, *language*) is statistically distinct from the rest of the words:
+
+```{r tiny_fix_on_bow, echo = FALSE, eval = TRUE, results = 'hide', message = FALSE}
+piantadosi_bow$token <- tolower(piantadosi_bow$token)
+```
+
+```{r piantadosi_bow_test, echo = TRUE, eval = TRUE, results = 'hide', message = FALSE}
+target_value <- piantadosi_bow$frequency[piantadosi_bow$token == "language"]
+mean_others <- mean(piantadosi_bow$frequency[piantadosi_bow$token != "language"])
+sd_others <- sd(piantadosi_bow$frequency[piantadosi_bow$token != "language"])
+
+z_score <- (target_value - mean_others) / sd_others
+z_score
+
+
+```
+
+The results are shared below: 
+
+```{r t-test_results, echo = FALSE, message = FALSE, eval = TRUE}
+z_score
+```
+
+We can conclude from this value that the term `language` is a frequent one, since it's 5 standard deviations away from the mean. That is a fair amount of standard deviations, if you ask me. 
+
+------------------------------------------------------------------------
+
