@@ -4,10 +4,10 @@
 \alias{heaps}
 \title{Heaps' law calculation}
 \usage{
-heaps(text)
+heaps(input, level = c("word", "letter"))
 }
 \arguments{
-\item{text}{Text vector, whose elements can be phrases or documents. Note that both can be just a word}
+\item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
 }
 \value{
 data.frame with accumulated size, and quantity of unique words

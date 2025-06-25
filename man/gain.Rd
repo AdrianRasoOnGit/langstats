@@ -7,9 +7,9 @@
 gain(text_p, text_q, level = c("word", "letter"))
 }
 \arguments{
-\item{text_p}{Local source}
+\item{text_p}{Local source, can be an actual text, or a data frame}
 
-\item{text_q}{Global source}
+\item{text_q}{Global source, can be an actual text, or a data frame}
 
 \item{level}{"word" or "letter"}
 }
@@ -28,8 +28,6 @@ gain(text1, text2, level = "word")
 # Example of comparison between two datasets (selected_piantadosi and heart_of_darkness, available in langstats, remember to load them with data(dataset_name))
 data(selected_piantadosi)
 data(heart_of_darkness)
-
-
 gain(selected_piantadosi, heart_of_darkness, level = "word")
 
 

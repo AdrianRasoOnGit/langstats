@@ -7,9 +7,9 @@
 cross_entropy(text_p, text_q, level = c("word", "letter"))
 }
 \arguments{
-\item{text_p}{local text}
+\item{text_p}{local text, or local data frame}
 
-\item{text_q}{global text, or reference}
+\item{text_q}{global text, or local data frame}
 
 \item{level}{"word" or "letter"}
 }

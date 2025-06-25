@@ -1,6 +1,6 @@
 #' Bag of Words
 #'
-#' It builds a frequency table of tokens from a text or corpus, with frequencies of each token and proportion of the sample.
+#' It builds a frequency table of tokens from a text or corpus, with frequencies of each token and proportion of the sample. Currently, it's quite close to what input_handling() does, but this function does not have any internal role in langstats: it's for the user to check token frequencies in an automatic and easy way.
 #'
 #' @param text Text vector, whose elements can be phrases or documents. Note that both can be just one word
 #' @param level It can be word or letter

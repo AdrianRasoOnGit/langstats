@@ -17,7 +17,7 @@ bow(text, level = c("word", "letter"), sort = TRUE)
 A data.frame, whose columns will be: (1) token, (2) frequency, (3) proportion
 }
 \description{
-It builds a frequency table of tokens from a text or corpus, with frequencies of each token and proportion of the sample.
+It builds a frequency table of tokens from a text or corpus, with frequencies of each token and proportion of the sample. Currently, it's quite close to what input_handling() does, but this function does not have any internal role in langstats: it's for the user to check token frequencies in an automatic and easy way.
 }
 \examples{
 

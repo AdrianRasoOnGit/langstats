@@ -1,64 +1,52 @@
 #' Generate n-grams from text or tokens
 #'
-#' This function creates n-grams of size \code{n} from the input text or token vector.
-#' It supports raw text input (which it tokenizes by whitespace by default),
-#' a custom tokenizer function, or a pre-tokenized character vector.
+#' This function generates sets of n-grams of the size n selected in the function. It supports text input, and data frame input, handled by the function input_handling().
 #'
-#' @param text A character string containing raw text, or a character vector of tokens.
-#' @param n Integer. The size of the n-grams to generate (e.g., 2 for bigrams).
-#'   Must be a positive integer.
-#' @param tokenizer Optional. Either \code{NULL} (default) to tokenize \code{text} by whitespace,
-#'   a function that takes \code{text} as input and returns a character vector of tokens,
-#'   or a character vector of tokens itself. If \code{text} is already tokenized,
-#'   pass \code{text} as \code{tokenizer}.
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
+#' @param n Integer. The size of the n-grams to generate (e.g., 2 for bigrams). Just in case: it must be positive!
 #'
-#' @return A \code{data.frame} with columns: (1) ngram, (2) integer vector of counts for each ngram, and (3) proportion of total n-grams.
+#' @return A data frame with columns: (1) actual ngram, (2) integer vector of counts for each ngram, and (3) proportion of total n-grams.
 #' }
 #'
 #' @examples
-#' # Using raw text input
-#' ngrams("this is a test sentence", n = 2)
+#' # Example with plain text (Cauchy, 1821: 1)
+#' ngrams("In speaking of the continuity of functions, I could not dispense with a treatment of the principal properties of infinitely small quantities, properties which serve as the foundation of the infinitesimal calculus.", n = 2)
 #'
-#' # Using a custom tokenizer function
-#' tokenize_words <- function(text) unlist(strsplit(tolower(text), "\\W+"))
-#' ngrams("This is another test.", n = 3, tokenizer = tokenize_words)
-#'
-#' # Using pre-tokenized input
-#' tokens <- c("the", "quick", "brown", "fox")
-#' ngrams(text = tokens, n = 2, tokenizer = tokens)
+#' # Example with a data frame
+#' df <- data.frame(word = c("Cauchy", "functions", "limits"), frequency = c(3, 10, 0))
+#' input_handling(df, level = "word")
 #'
 #' @export
-ngrams <- function(text, n = 2, tokenizer = NULL) {
+ngrams <- function(input, n = 2, level = c("word", "letter")) {
+  level <- match.arg(level)
+
+  # Check if the ngram requested is a valid kind of ngram
   if (!is.numeric(n) || length(n) != 1 || n <= 0) {
-    stop("Parameter 'n' must be a single positive integer.")
+    stop("Remember! Parameter 'n' must be a single positive integer.")
   }
 
-  if (is.null(tokenizer)) {
-    tokens <- tolower(unlist(strsplit(text, "\\W+")))
-  } else if (is.function(tokenizer)) {
-    tokens <- tokenizer(text)
-  } else if (is.character(tokenizer)) {
-    tokens <- tokenizer
-  } else {
-    stop("'tokenizer' must be NULL, a function, or a character vector of tokens.")
-  }
+  # Use input_handling to standardize input
+  input <- input_handling(input, level = level)
+  tokens <- input$elements
 
   if (length(tokens) == 0) {
-    warning("No tokens found in text.")
+    warning("Caution! No tokens have been found in the input provided. Was it the right sample?")
     return(data.frame(ngram = character(), frequency = integer(), proportion = numeric()))
   }
   if (n > length(tokens)) {
-    warning("'n' is greater than the number of tokens. Returning empty data frame.")
-    return(data.frame(ngram = character(), frequency = integer(), proportion = numeric()))
+    stop(sprintf("Caution! The 'n' provided is a bit greater than the number of tokens from the input. Try again with a smaller 'n'"))
   }
 
+  # Generation of n-grams with a sliding window
   ngrams_list <- vapply(seq_len(length(tokens) - n + 1), function(i) {
     paste(tokens[i:(i + n - 1)], collapse = " ")
   }, character(1))
 
+  # Storage of ngrams on a tabular form
   freq_table <- table(ngrams_list)
   freq_vec <- as.integer(freq_table)
 
+  # Data frame building
   data.frame(
     ngram = names(freq_table),
     frequency = freq_vec,

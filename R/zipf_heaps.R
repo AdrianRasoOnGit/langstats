@@ -1,9 +1,10 @@
 #' Zipf's law calculation
 #'
-#' This function grabs a text vector and returns a data frame with the words from the vector, and their frequencies and ranks.
+#' This function grabs any input acceptable by input_handling() and returns a data frame with the words from the vector, and their frequencies and ranks.
 #'
 #'
-#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column!
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
+#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
 #' @return data.frame Here the columns will be: (1) word, (2) frequency, (3) rank
 #' @examples
 #' # Example with a string (Boyle, 1673, found in Fisher (1935))
@@ -18,6 +19,9 @@
 zipf <- function(input, level = c("word", "letter")) {
   level <- match.arg(level)
 
+  # Input customs!
+  print(str(input))
+
   # Use input_handling, standard function for the introduction of data into functions from langstats
   input <- input_handling(input, level = level)
 
@@ -25,22 +29,28 @@ zipf <- function(input, level = c("word", "letter")) {
   elements <- input$elements
 
   # And then, the frequencies
-  freq <- sort(table(elements), decreasing = TRUE)
+  freq <- input$freqs
+
+  # Sorting of counts
+  freq_sorted <- sort(freq, decreasing = TRUE)
 
   # Finally, we build the data frame with the results from the Zipf report
-  df <- data.frame( # data frame preparation
-    word = names(freq),# first column, word
-    frequency = as.integer(freq), # second column, frequency
-    rank = seq_along(freq) # third column, rank
+
+  zipf_df <- data.frame(
+    word = names(freq_sorted),
+    frequency = as.integer(freq_sorted),
+    rank = seq_along(freq_sorted)
   )
-  df
+
+  zipf_df
+
 }
 
 #' Heaps' law calculation
 #'
 #' Through this function we can estimate the growth of vocabulary with attention to the size of the corpus.
 #'
-#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column!
+#' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
 #' @return data.frame with accumulated size, and quantity of unique words
 #' @examples
 #'
@@ -61,6 +71,7 @@ heaps <- function(input, level = c("word", "letter")) {
 
   # We get from the unified treatment, first, the tokens
   elements <- input$elements
+  freq <- input$freqs
 
   # And then, the frequencies
   freq <- sort(table(elements), decreasing = TRUE)
@@ -70,8 +81,9 @@ heaps <- function(input, level = c("word", "letter")) {
   vocab <- sapply(token_count, function(i) length(unique(elements[1:i])))
 
   # Building of the data frame
-  data.frame(
+  df <- data.frame(
     tokens = token_count,
     vocabulary = vocab
   )
+  df
 }

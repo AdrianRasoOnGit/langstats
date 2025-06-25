@@ -2,14 +2,14 @@
 % Please edit documentation in R/information_theory.R
 \name{shannon_entropy}
 \alias{shannon_entropy}
-\title{Shannon's entropy or Shannon's information}
+\title{Shannon's entropy}
 \usage{
-shannon_entropy(text, level = c("word", "letter"))
+shannon_entropy(input, level = c("word", "letter"))
 }
 \arguments{
-\item{text}{Text vector, whose elements can be phrases or texts}
+\item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
 
-\item{level}{"word" o "letter"}
+\item{level}{"word" or "letter"}
 }
 \value{
 Entropy in bits
@@ -18,7 +18,7 @@ Entropy in bits
 It calculates Shannon's entropy of a linguistic element such as word or letter, provided a sample space ("text").
 }
 \examples{
-# Example of entropy of words from Shannon's paper "The bandwagon" ()
+# Example of entropy of words from Shannon's paper "The bandwagon" (Shannon, 1953)
 text1 <- "Information theory has, in the last few years, become something of a scientific bandwagon. Starting as a technical tool for the communication engineer, it has received an extraordinary amount of publicity in the popular as well as the scientific press. In part, this has been due to connections with such fashionable fields as computing machines, cybernetics, and automation; and in part, to the novelty of its subject matter. As a consequence, it has perhaps been ballooned to an importance beyond its actual accomplishments. Our fellow scientists in many different fields, attracted by the fanfare and by the new avenues opened to scientific analysis, are using these ideas in their own problems. Applications are being made to biology, psychology, linguistics, fundamental physics, economics, the theory of organization, and many others. In short, information theory is currently partaking of a somewhat heady draught of general popularity. Although this wave of popularity is certainly pleasant and exciting for those of us working in the field, it carries at the same time an element of danger. While we feel that information theory is indeed a valuable tool in providing fundamental insights into the nature of communication problems and will continue to grow in importance, it is certainly no panacea for the communication engineer or, a fortiori, for anyone else. Seldom do more than a few of nature's secrets give way at one time. It will be all too easy for our somewhat artificial prosperity to collapse overnight when it is realized that the use of a few exciting words like information, entropy, redundancy, do not solve all our problems. What can be done to inject a note of moderation in this situation? In the first place, workers in other fields should realize that the basic results of the subject are aimed in a very specific direction, a direction that is not necessarily relevant to such fields as psychology, economics, and other social sciences. Indeed, the hard core of information theory is, essentially, a branch of mathematics, a strictly deductive system. A thorough understanding of the mathematical foundation and its communication application is surely a prerequisite to other applications. I personally believe that many of the concepts of information theory will prove useful in these other fields - and, indeed, some results are already quite promising - but the establishing of such applications is not a trivial matter of translating words to a new domain, but rather the slow tedious process of hypothesis and experimental verification. If, for example, the human being acts in some situations like an ideal decoder, this is an experimental and not a mathematical fact, and as such must be tested under a wide variety of experimental situations."
 shannon_entropy(text1, level = "word")
 

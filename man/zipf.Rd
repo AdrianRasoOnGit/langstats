@@ -4,16 +4,18 @@
 \alias{zipf}
 \title{Zipf's law calculation}
 \usage{
-zipf(text)
+zipf(input, level = c("word", "letter"))
 }
 \arguments{
-\item{text}{Text vector, whose elements can be phrases or documents. Note that both can be just a word}
+\item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
+
+\item{level}{As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter}
 }
 \value{
 data.frame Here the columns will be: (1) word, (2) frequency, (3) rank
 }
 \description{
-This function grabs a text vector and returns a data frame with the words from the vector, and their frequencies and ranks.
+This function grabs any input acceptable by input_handling() and returns a data frame with the words from the vector, and their frequencies and ranks.
 }
 \examples{
 # Example with a string (Boyle, 1673, found in Fisher (1935))
