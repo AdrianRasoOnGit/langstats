@@ -4,6 +4,7 @@
 #'
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
+#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
 #' @return List with the adjusted parameters, that is: alpha, beta, and C. Furthermore, original data are provided
 #' @examples
 #' # Example with multiple texts
@@ -21,7 +22,7 @@ zipf_mandelbrot <- function(input, level = c("word", "letter")) {
   tokens <- input_data$elements
 
   if (length(tokens) == 0) {
-    warning("No valid tokens were found in the input.")
+    warning("No tokens were found in the input!")
     return(NULL)
   }
 
@@ -40,7 +41,7 @@ zipf_mandelbrot <- function(input, level = c("word", "letter")) {
         start = list(C = max(df$frequency), beta = 1, alpha = 1.0),
         control = list(maxiter = 1000))
   }, error = function(e) {
-    warning("The model could not be adjusted. The reason may be: ", e$message)
+    warning("It hasn't been possible to adjust the model. Have you considered this? ", e$message)
     return(NULL)
   })
 
