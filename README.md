@@ -5,7 +5,7 @@ analysis
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <!-- badges: start -->
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/AdrianRasoOnGit/langstats)
+
 [![R-CMD-check](https://github.com/AdrianRasoOnGit/langstats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AdrianRasoOnGit/langstats/actions)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -29,7 +29,7 @@ required models manually. It offers a flexible and practical suite of
 functions that are designed to adapt, through their parameters and
 general structure, to a wide range of projects.
 
-In the current version `v0.1.0` *(remember to check the [official
+In the current version *(remember to check the [official
 repository](github.com/AdrianRasoOnGit/langstats) to confirm whether you
 are using the latest version!)*, the package includes the following
 functions:
@@ -79,6 +79,22 @@ functions:
   A bag of words is a standard NLP object that tallies the frequency of
   tokens in a text. This function returns a `data.frame` with each
   token, its absolute count, and its relative proportion.
+
+Since `langstats v0.2.0`, the package comes with an internal function
+that forces an unified treatment of inputs. That function is named,
+quite in a straightforward way, `input_handling()`. This is of no real
+use for the user, as it is pretty internal, but out of transparency I
+mention it here.
+
+- **Input handling** (`input_handling(input)`): Given a text or a data
+  frame, it detects or calculates frequencies from tokens and also
+  probability values. These are relevant data for the functions of the
+  package and are obtained and stored in a universal manner, so errors
+  and implementations are swifter and safer. It returns a list, which is
+  way faster than a data frame to manipulate. The readability that we
+  lose with the list is trivial, since that list will be of internal use
+  and the user will always have at hand a data frame output to assess
+  the data and results.
 
   Besides, the package comes with some example data to try the features
   of this resource. Remember to type `data(“name_of_the_data_here”)`

@@ -85,9 +85,9 @@ In `langstats`, we try to offer these tools in a way that any can apply the core
   
 - **Heart of Darkness** (named: `heart_of_darkness`): The whole Joseph Conrad’s novel. Ideal to try the functions of the package.
 
-Since `langstats v0.2.0`, the package comes with an internal function that forces an unified treatment of inputs. That function is named, quite in a straightforward way, `input_handling()`. This is of not real use for the user, as it is pretty internal, but out of transparency I mention it here.
+Since `langstats v0.2.0`, the package comes with an internal function that forces an unified treatment of inputs. That function is named, quite in a straightforward way, `input_handling()`. This is of no real use for the user, as it is pretty internal, but out of transparency I mention it here.
 
-- **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and storaged in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readibility that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results.
+- **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and storaged in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readability that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results.
 
   In the following sections of this overview, we will show how to use `langstats`. For further details, you can always
   run `?function_name` in your R console, or visit our site on [GitHub](github.com/AdrianRasoOnGit/langstats).
