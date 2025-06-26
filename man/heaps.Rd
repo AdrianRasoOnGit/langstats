@@ -8,6 +8,8 @@ heaps(input, level = c("word", "letter"))
 }
 \arguments{
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
+
+\item{level}{As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter}
 }
 \value{
 data.frame with accumulated size, and quantity of unique words

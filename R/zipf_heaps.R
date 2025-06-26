@@ -19,9 +19,6 @@
 zipf <- function(input, level = c("word", "letter")) {
   level <- match.arg(level)
 
-  # Input customs!
-  print(str(input))
-
   # Use input_handling, standard function for the introduction of data into functions from langstats
   input <- input_handling(input, level = level)
 

@@ -8,6 +8,8 @@ zipf_mandelbrot(input, level = c("word", "letter"))
 }
 \arguments{
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
+
+\item{level}{As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter}
 }
 \value{
 List with the adjusted parameters, that is: alpha, beta, and C. Furthermore, original data are provided
@@ -20,7 +22,7 @@ Zipf-Mandelbrot's law it's a fix of the original Zipf's law, especifically desig
 text <- c("mandelbrot is polish", "mandelbrot is french", "mandelbrot is american")
 zipf_mandelbrot(text)
 
-# Example with a dataset (selected_piantadosi, available in langstats, remember to load it with data(dataset_name))
+# Example with a dataset (selected_piantadosi)
 data(selected_piantadosi)
 zipf_mandelbrot(selected_piantadosi)
 }

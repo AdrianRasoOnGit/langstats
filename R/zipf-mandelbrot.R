@@ -11,7 +11,7 @@
 #' text <- c("mandelbrot is polish", "mandelbrot is french", "mandelbrot is american")
 #' zipf_mandelbrot(text)
 #'
-#' # Example with a dataset (selected_piantadosi, available in langstats, remember to load it with data(dataset_name))
+#' # Example with a dataset (selected_piantadosi)
 #' data(selected_piantadosi)
 #' zipf_mandelbrot(selected_piantadosi)
 #' @export
