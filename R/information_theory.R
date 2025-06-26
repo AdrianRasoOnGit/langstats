@@ -61,44 +61,20 @@ cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
   input_p <- input_handling(text_p, level = level)
   input_q <- input_handling(text_q, level = level)
 
-  # We grab tokens from the local source
-  elements_p <- input_p$elements
-  elements_q <- input_q$elements
+  # We grab the probabilities from the local (p) and global (q) source
+  p <- input_p$probs
+  q <- input_q$probs
 
-  # And the frequencies too, from both sources!
-  freqs_p <- input_p$freqs
-  freqs_q <- input_q$freqs
+  # We want to assure we have achieved traceability in the input_handling function, so let's check if we have an actual vector of tokens and values
+  if(is.null(names(p))) names (p) <- input_p$elements
+  if(is.null(names(q))) names(q) <- input_q$elements
 
-  # When we have a text, frequencies are not given. We have, now, to calculate them
-  freqs_p <- if (is.null(input_p$freqs)) {
-    table(elements_p) / length(elements_p)
-  } else {
-    setNames(input_p$freqs, elements_p)
-  }
-
-  freqs_q <- if (is.null(input_q$freqs)) {
-    table(elements_q) / length(elements_q)
-  } else {
-    setNames(input_q$freqs, input_q$elements)
-  }
-
-  # We get tokens from local source
-  words <- names(freqs_p)
-  p <- freqs_p
-
-  # Assign names to Q if not present
-  if (is.null(names(freqs_q))) {
-    names(freqs_q) <- input_q$elements
-  }
-
-  # Align Q to P's vocabulary
-  q <- freqs_q[words]
-
-
-  # We apply a small epsilon smoothing where Q is missing
+  # We now align the vocab from both sources
+  words <- names(p)
+  q <- q[words]
   q[is.na(q)] <- 1e-10
 
-  # Cross entropy formula
+  # Finally, we get to apply the cross entropy formula
   -sum(p * log2(q))
 }
 
@@ -129,36 +105,23 @@ gain <- function(text_p, text_q, level = c("word", "letter")) {level <- match.ar
   input_p <- input_handling(text_p, level = level)
   input_q <- input_handling(text_q, level = level)
 
-  # Ensure freqs are present, otherwise compute them
-  if (is.null(input_p$freqs)) {
-    freqs_p <- table(input_p$elements)
-    freqs_p <- freqs_p / sum(freqs_p)
-  } else {
-    freqs_p <- input_p$freqs
-    names(freqs_p) <- input_p$elements
-  }
+  # Let's extract probabilities from the standard handling of data
+  p <- input_p$probs
+  q <- input_q$probs
 
-  if (is.null(input_q$freqs)) {
-    freqs_q <- table(input_q$elements)
-    freqs_q <- freqs_q / sum(freqs_q)
-  } else {
-    freqs_q <- input_q$freqs
-    names(freqs_q) <- input_q$elements
-  }
+  # Just in case, we are going to check if names exist
+  if(is.null(names(p))) names(p) <- input_p$elements
+  if(is.null(names(q))) names(q) <- input_q$elements
 
-  # Ensure names exist
-  if (is.null(names(freqs_p))) names(freqs_p) <- input_p$elements
-  if (is.null(names(freqs_q))) names(freqs_q) <- input_q$elements
-
-  # Align vocabulary
-  words <- names(freqs_p)
-  q <- freqs_q[words]
+  # We are now ready to align both vocabularies
+  words <- names(p)
+  q <- q[words]
   q[is.na(q)] <- 1e-10
 
-  # Entropy and cross entropy calculation
-  entropy_p <- -sum(freqs_p * log2(freqs_p))
-  cross_entropy_pq <- -sum(freqs_p * log2(q))
+  # Obtain entropy and cross entropy. Required for information gain!
+  entropy_p <- -sum(p * log2(p))
+  cross_entropy_pq <- -sum(p * log2(q))
 
-  # Information gain = H(P) - H(P, Q)
+  # Finally, we get to evaluate the information gain
   entropy_p - cross_entropy_pq
 }

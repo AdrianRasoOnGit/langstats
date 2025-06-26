@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this document we present a short tour around the main functions and capabilities of `langstats` through a comprehensive set of given problems and use cases. We encourage the reader to follow the procedures, but we encourage even more to be creative and to find more interesting applications of the function. Here, we will only deal with plain and accessible cases, that guarantees a full grasp of how the package works.
+In this document we present a short tour around the main functions and capabilities of `langstats` through a comprehensive set of given problems and use cases. We encourage the reader to follow the procedures, but we encourage even more to be creative and to find more interesting applications of the functions here treated. Here, we will only deal with plain and accessible cases, that guarantees a full grasp of how the package works.
 
 Statistical linguistics, language data science, and natural language
 processing (NLP), among other areas, share the goal of uncovering
@@ -30,13 +30,13 @@ In `langstats`, we try to offer these tools in a way that any can apply the core
 
 ------------------------------------------------------------------------
 
-- **Zipf’s law** (`zipf(text)`):  
+- **Zipf’s law** (`zipf(input)`):  
   Expresses a power-law relationship between the frequency of a word and
   its rank in the corpus. According to Zipf’s law, the most frequent
   word appears about twice as often as the second most frequent word,
   three times as often as the third, and so on.
 
-- **Heaps’ law** (`heaps(text)`):  
+- **Heaps’ law** (`heaps(input)`):  
   Estimates vocabulary growth based on the number of unique words found
   in a corpus. The relationship is typically expressed as
   $V(N) = K N^\beta$, where $V$ is the vocabulary size and $N$ is the
@@ -48,7 +48,7 @@ In `langstats`, we try to offer these tools in a way that any can apply the core
   two parameters: a rank offset $\beta$, and a scaling constant $C$,
   resulting in a more flexible power-law model.
 
-- **Shannon’s entropy** (`shannon_entropy(text, level)`):  
+- **Shannon’s entropy** (`shannon_entropy(input, level)`):  
   Quantifies the average uncertainty or information contained in a
   linguistic unit (word or letter), based on its distribution. This
   metric is computed using:  
@@ -84,6 +84,10 @@ In `langstats`, we try to offer these tools in a way that any can apply the core
   website (<https://colala.berkeley.edu/people/piantadosi/>). 
   
 - **Heart of Darkness** (named: `heart_of_darkness`): The whole Joseph Conrad’s novel. Ideal to try the functions of the package.
+
+Since `langstats v0.2.0`, the package comes with an internal function that forces an unified treatment of inputs. That function is named, quite in a straightforward way, `input_handling()`. This is of not real use for the user, as it is pretty internal, but out of transparency I mention it here.
+
+- **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and storaged in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readibility that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results.
 
   In the following sections of this overview, we will show how to use `langstats`. For further details, you can always
   run `?function_name` in your R console, or visit our site on [GitHub](github.com/AdrianRasoOnGit/langstats).

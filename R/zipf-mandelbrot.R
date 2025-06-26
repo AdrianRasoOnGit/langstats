@@ -4,7 +4,7 @@
 #'
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
-#' @return List with the adjusted parameters, that is: alpha, beta, and C. Futhermore, original data are provided
+#' @return List with the adjusted parameters, that is: alpha, beta, and C. Furthermore, original data are provided
 #' @examples
 #' # Example with multiple texts
 #' text <- c("mandelbrot is polish", "mandelbrot is french", "mandelbrot is american")

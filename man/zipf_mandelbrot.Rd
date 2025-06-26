@@ -10,7 +10,7 @@ zipf_mandelbrot(input, level = c("word", "letter"))
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
 }
 \value{
-List with the adjusted parameters, that is: alpha, beta, and C. Futhermore, original data are provided
+List with the adjusted parameters, that is: alpha, beta, and C. Furthermore, original data are provided
 }
 \description{
 Zipf-Mandelbrot's law it's a fix of the original Zipf's law, especifically designed to be more precise in low ranks (grammatical terms).
