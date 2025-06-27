@@ -81,6 +81,10 @@ the following functions:
 
 - **N-grams** (`ngrams(input, level)`): With this function, we can produce n-grams that capture the combinatorial situation of the elements in the text, considering different degrees of grouping through the parameter n, which will be an integer representing the number of elements grouped in the n-gram.
 
+- **$G^2$ lexical co-ocurrence test (`collocation_g2(input, word1(optional), word2(optional))`)**: It performs a log-likelihood ratio test (that is, a $G^2$ test), with the purpose of unveiling significant collocation patterns in lexical distributions. When word1 and word2 are given, the $G^2$ test is performed on both words through a contingency table (that can be accessed!), and if they are not provided, `g2()` will show the most significant collocation structures in the input.
+
+- **$G^2$ test and contingency tables (`g2(input)`) **: It performs a log-likelihood ratio test (that is, a $G^2$ test), that it is called from other functions. This is an internal quite straightforward function in the package, it's real use can be found in `collocation_g2()`, which supports this very function.
+
 Since `langstats v0.2.0`, the package comes with an internal function that forces an unified treatment of inputs. That function is named, quite in a straightforward way, `input_handling()`. This is of no real use for the user, as it is pretty internal, but out of transparency I mention it here.
 
 - **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and stored in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readability that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results.

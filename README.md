@@ -36,25 +36,25 @@ functions:
 
 ------------------------------------------------------------------------
 
-- **Zipf’s law** (`zipf(text)`):  
+- **Zipf’s law** (`zipf(input, level)`):  
   Expresses a power-law relationship between the frequency of a word and
   its rank in the corpus. According to Zipf’s law, the most frequent
   word appears about twice as often as the second most frequent word,
   three times as often as the third, and so on.
 
-- **Heaps’ law** (`heaps(text)`):  
+- **Heaps’ law** (`heaps(input, level)`):  
   Estimates vocabulary growth based on the number of unique words found
   in a corpus. The relationship is typically expressed as
   $V(N) = K N^\beta$, where $V$ is the vocabulary size and $N$ is the
   number of tokens.
 
-- **Zipf-Mandelbrot’s law** (`zipf_mandelbrot(text)`):  
+- **Zipf-Mandelbrot’s law** (`zipf_mandelbrot(input)`):  
   A refinement of Zipf’s law proposed by Mandelbrot (1955) that better
   models the frequency of low-rank (often grammatical) terms. It adds
   two parameters: a rank offset $\beta$, and a scaling constant $C$,
   resulting in a more flexible power-law model.
 
-- **Shannon’s entropy** (`shannon_entropy(text, level)`):  
+- **Shannon’s entropy** (`shannon_entropy(input, level)`):  
   Quantifies the average uncertainty or information contained in a
   linguistic unit (word or letter), based on its distribution. This
   metric is computed using:  
@@ -75,10 +75,31 @@ functions:
   entropy: $IG = H(P) - H(P, Q)$. It quantifies how much more
   informative a model is relative to a reference distribution.
 
-- **Bag of Words generator** (`bow(text)`):  
+- **Bag of Words generator** (`bow(text, level)`):  
   A bag of words is a standard NLP object that tallies the frequency of
   tokens in a text. This function returns a `data.frame` with each
   token, its absolute count, and its relative proportion.
+
+- **N-grams** (`ngrams(input, level)`): With this function, we can
+  produce n-grams that capture the combinatorial situation of the
+  elements in the text, considering different degrees of grouping
+  through the parameter n, which will be an integer representing the
+  number of elements grouped in the n-gram.
+
+- **$G^2$ lexical co-ocurrence test
+  (`collocation_g2(input, word1(optional), word2(optional))`)**: It
+  performs a log-likelihood ratio test (that is, a $G^2$ test), with the
+  purpose of unveiling significant collocation patterns in lexical
+  distributions. When word1 and word2 are given, the $G^2$ test is
+  performed on both words through a contingency table (that can be
+  accessed!), and if they are not provided, `g2()` will show the most
+  significant collocation structures in the input.
+
+- **$G^2$ test and contingency tables (`g2(input)`) **: It performs a
+  log-likelihood ratio test (that is, a $G^2$ test), that it is called
+  from other functions. This is an internal quite straightforward
+  function in the package, it’s real use can be found in
+  `collocation_g2()`, which supports this very function.
 
 Since `langstats v0.2.0`, the package comes with an internal function
 that forces an unified treatment of inputs. That function is named,
