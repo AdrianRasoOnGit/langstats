@@ -6,6 +6,7 @@ analysis
 
 <!-- badges: start -->
 
+[![Release](https://img.shields.io/github/release/AdrianRasoOnGit/langstats.svg)](https://github.com/AdrianRasoOnGit/langstats/releases/latest)
 [![R-CMD-check](https://github.com/AdrianRasoOnGit/langstats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AdrianRasoOnGit/langstats/actions)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
