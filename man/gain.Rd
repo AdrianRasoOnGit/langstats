@@ -4,7 +4,12 @@
 \alias{gain}
 \title{Information gain between two texts}
 \usage{
-gain(text_p, text_q, level = c("word", "letter"))
+gain(
+  text_p,
+  text_q,
+  level = c("word", "letter"),
+  token = c("regex", "transformers")
+)
 }
 \arguments{
 \item{text_p}{Local source, can be an actual text, or a data frame}
@@ -12,6 +17,8 @@ gain(text_p, text_q, level = c("word", "letter"))
 \item{text_q}{Global source, can be an actual text, or a data frame}
 
 \item{level}{"word" or "letter"}
+
+\item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
 }
 \value{
 Gained information bits, that is: (H(P) - H(P,Q))

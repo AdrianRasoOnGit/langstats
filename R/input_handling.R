@@ -4,6 +4,7 @@
 #'
 #' @param input A text vector or a data frame, whether it comes from any function of langstats or any other origin
 #' @param level It defines, as in many other functions here, the level of analysis required: it can be word or letter currently.
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
 #'
 #' @return A list, which is performance attractive, with two elements: (1) elements, that are linguistic elements, and (2) frequencies, which can be found or calculated; if both of these are not possible, the index will be NULL
 #' @details
@@ -22,15 +23,39 @@
 #' @keywords data_handling
 #' @export
 #'
-input_handling <- function(input, level = c("word", "letter")) {
+input_handling <- function(input, level = c("word", "letter"), token = c("regex", "transformer")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
-    # Tokenization function
-    tokenize <- function(x) {
-      x <- tolower(x)
-      if (level == "word") unlist(strsplit(x, "\\W+"))
-      else unlist(strsplit(x, ""))
+  # Through reticulate, we load the BERT tokenizer
+  get_tokenizer <- local({
+    tokenizer <- NULL
+    function() {
+      if (is.null(tokenizer)) {
+        library(reticulate)
+        transformers <- import("transformers")
+        tokenizer <<- transformers$AutoTokenizer$from_pretrained("bert-base-uncased")
+      }
+      tokenizer
     }
+  })
+
+  # Tokenization function using transformer for word level
+  tokenize <- function(x) {
+    x <- tolower(x)
+    if (level == "letter") {
+      return(unlist(strsplit(x, "")))
+    }
+
+    if (token == "regex") {
+      return(unlist(strsplit(x, "\\W+")))
+    }
+
+    # Transformer tokenisation
+    tokenizer_fn <- get_tokenizer()
+    tokens <- tokenizer_fn$tokenize(x)
+    unlist(tokens)
+  }
     # Check if input is a data frame, and if that's the case, we lowercase columns names
     if (is.data.frame(input)) {
       colnames_lower <- tolower(names(input))

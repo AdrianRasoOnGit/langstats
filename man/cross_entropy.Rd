@@ -4,7 +4,12 @@
 \alias{cross_entropy}
 \title{Cross entropy between texts}
 \usage{
-cross_entropy(text_p, text_q, level = c("word", "letter"))
+cross_entropy(
+  text_p,
+  text_q,
+  level = c("word", "letter"),
+  token = c("regex", "transformers")
+)
 }
 \arguments{
 \item{text_p}{local text, or local data frame}
@@ -12,6 +17,8 @@ cross_entropy(text_p, text_q, level = c("word", "letter"))
 \item{text_q}{global text, or local data frame}
 
 \item{level}{"word" or "letter"}
+
+\item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
 }
 \value{
 Cross entropy in bits

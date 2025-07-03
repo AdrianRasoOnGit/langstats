@@ -116,7 +116,12 @@ mention it here.
   way faster than a data frame to manipulate. The readability that we
   lose with the list is trivial, since that list will be of internal use
   and the user will always have at hand a data frame output to assess
-  the data and results.
+  the data and results. Since the version `v0.4.0`, the function offers
+  a BERT-powered tokeniser, that can be accessed through the argument
+  `token = c("regex", "transformers")`. If not defined,
+  `input_handling()` selects the regex based tokeniser of previous
+  versions, which is usually faster and still satisfactory most of the
+  times.
 
   Besides, the package comes with some example data to try the features
   of this resource. Remember to type `data(“name_of_the_data_here”)`

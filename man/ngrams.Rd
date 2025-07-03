@@ -4,7 +4,12 @@
 \alias{ngrams}
 \title{Generate n-grams from text or tokens}
 \usage{
-ngrams(input, n = 2, level = c("word", "letter"))
+ngrams(
+  input,
+  n = 2,
+  level = c("word", "letter"),
+  token = c("regex", "transformers")
+)
 }
 \arguments{
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
@@ -12,6 +17,8 @@ ngrams(input, n = 2, level = c("word", "letter"))
 \item{n}{Integer. The size of the n-grams to generate (e.g., 2 for bigrams). Just in case: it must be positive!}
 
 \item{level}{As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter}
+
+\item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
 }
 \value{
 A data frame with columns: (1) actual ngram, (2) integer vector of counts for each ngram, and (3) proportion of total n-grams.

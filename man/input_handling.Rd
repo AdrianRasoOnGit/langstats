@@ -4,12 +4,18 @@
 \alias{input_handling}
 \title{Input handling for functions of langstats: a smart and standard channel for inputs}
 \usage{
-input_handling(input, level = c("word", "letter"))
+input_handling(
+  input,
+  level = c("word", "letter"),
+  token = c("regex", "transformer")
+)
 }
 \arguments{
 \item{input}{A text vector or a data frame, whether it comes from any function of langstats or any other origin}
 
 \item{level}{It defines, as in many other functions here, the level of analysis required: it can be word or letter currently.}
+
+\item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
 }
 \value{
 A list, which is performance attractive, with two elements: (1) elements, that are linguistic elements, and (2) frequencies, which can be found or calculated; if both of these are not possible, the index will be NULL

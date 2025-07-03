@@ -5,6 +5,7 @@
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
 #' @param n Integer. The size of the n-grams to generate (e.g., 2 for bigrams). Just in case: it must be positive!
 #' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
+#'@param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
 #'
 #' @return A data frame with columns: (1) actual ngram, (2) integer vector of counts for each ngram, and (3) proportion of total n-grams.
 #'
@@ -17,8 +18,9 @@
 #' input_handling(df, level = "word")
 #'
 #' @export
-ngrams <- function(input, n = 2, level = c("word", "letter")) {
+ngrams <- function(input, n = 2, level = c("word", "letter"), token = c("regex", "transformers")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
   # Check if the ngram requested is a valid kind of ngram
   if (!is.numeric(n) || length(n) != 1 || n <= 0) {

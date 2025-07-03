@@ -16,7 +16,7 @@
 #' zipf_mandelbrot(selected_piantadosi)
 #' @export
 #' @importFrom stats nls coef
-zipf_mandelbrot <- function(input, level = c("word", "letter")) {
+zipf_mandelbrot <- function(input, level = c("word", "letter"), token = c("regex", "transformers")) {
   # Standardize input
   input_data <- input_handling(input, level = level)
   tokens <- input_data$elements

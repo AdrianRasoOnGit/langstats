@@ -20,3 +20,11 @@ What's new?
 * Collocations G^2 tests support! We now offer a function to conduct hypothesis testing on word collocations, and even to conduct exploratory reports on which bigrams are more statistically significant in a text. All powered by the ngrams() already avalaible function.
 
 * Minor typos and errors in documentation and workflow protocols fixed.
+
+# langstats v0.4.0
+
+What's new?
+
+* `input_handling()` now supports neural tokenisation using HuggingFace's BERT tokenizer via `reticulate`. Use `token = "transformer"` for more accurate, context-aware word splitting (e.g., handling subwords, contractions, punctuation). By the way, the default remains `token = "regex"` for speed use.
+
+* With this new feature, it comes a new necessity: importing `transformers` and `torch`. The package automatically loads Python dependencies via `reticulate::import()`. Users must install `transformers` and `torch` in a 64-bit Python environment!

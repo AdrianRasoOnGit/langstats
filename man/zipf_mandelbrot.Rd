@@ -4,7 +4,11 @@
 \alias{zipf_mandelbrot}
 \title{Mandelbrot's adjustment on Zipf's law}
 \usage{
-zipf_mandelbrot(input, level = c("word", "letter"))
+zipf_mandelbrot(
+  input,
+  level = c("word", "letter"),
+  token = c("regex", "transformers")
+)
 }
 \arguments{
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}

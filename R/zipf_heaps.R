@@ -4,7 +4,9 @@
 #'
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
-#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
+#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter.
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return data.frame Here the columns will be: (1) word, (2) frequency, (3) rank
 #' @examples
 #' # Example with a string (Boyle, 1673, found in Fisher (1935))
@@ -16,8 +18,9 @@
 #' zipf(selected_piantadosi)
 #'
 #' @export
-zipf <- function(input, level = c("word", "letter")) {
+zipf <- function(input, level = c("word", "letter"), token = c("regex", "transformers")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
   # Use input_handling, standard function for the introduction of data into functions from langstats
   input <- input_handling(input, level = level)
@@ -48,7 +51,9 @@ zipf <- function(input, level = c("word", "letter")) {
 #' Through this function we can estimate the growth of vocabulary with attention to the size of the corpus.
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
-#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
+#' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter.
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return data.frame with accumulated size, and quantity of unique words
 #' @examples
 #'
@@ -61,8 +66,9 @@ zipf <- function(input, level = c("word", "letter")) {
 #' heaps(heart_of_darkness)
 #'
 #' @export
-heaps <- function(input, level = c("word", "letter")) {
+heaps <- function(input, level = c("word", "letter"),token = c("regex", "transformers")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
   # Use input_handling, standard function for the introduction of data into functions from langstats
   input <- input_handling(input, level = level)

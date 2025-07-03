@@ -4,6 +4,8 @@
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
 #' @param level "word" or "letter"
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return Entropy in bits
 #' @examples
 #' # Example of entropy of words from Shannon's paper "The bandwagon" (Shannon, 1953)
@@ -16,8 +18,9 @@
 #'
 #' @export
 
-shannon_entropy <- function(input, level = c("word", "letter")) {
+shannon_entropy <- function(input, level = c("word", "letter"), token = c("regex", "transformers")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
   # input_handling()! We handle the data introduced in a standard way
   input <- input_handling(input, level = level)
@@ -38,6 +41,8 @@ shannon_entropy <- function(input, level = c("word", "letter")) {
 #' @param text_p local text, or local data frame
 #' @param text_q global text, or local data frame
 #' @param level "word" or "letter"
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return Cross entropy in bits
 #' @examples
 #' # Example of comparison between two texts on word level (Shannon, 1939)
@@ -54,8 +59,9 @@ shannon_entropy <- function(input, level = c("word", "letter")) {
 #'
 #' @export
 #'
-cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
+cross_entropy <- function(text_p, text_q, level = c("word", "letter"), token = c("regex", "transformers")) {
   level <- match.arg(level)
+  token <- match.arg(token)
 
   # Use input_handling to standardize both sources
   input_p <- input_handling(text_p, level = level)
@@ -85,6 +91,8 @@ cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
 #' @param text_p Local source, can be an actual text, or a data frame
 #' @param text_q Global source, can be an actual text, or a data frame
 #' @param level "word" or "letter"
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return Gained information bits, that is: (H(P) - H(P,Q))
 #' @examples
 #' # Example of information gain from two texts (Shannon, 1939)
@@ -99,7 +107,8 @@ cross_entropy <- function(text_p, text_q, level = c("word", "letter")) {
 #'
 #'
 #' @export
-gain <- function(text_p, text_q, level = c("word", "letter")) {level <- match.arg(level)
+gain <- function(text_p, text_q, level = c("word", "letter"), token = c("regex", "transformers")) {level <- match.arg(level)
+token <- match.arg(token)
 
   # Standardize inputs
   input_p <- input_handling(text_p, level = level)

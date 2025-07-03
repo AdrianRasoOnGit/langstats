@@ -4,12 +4,18 @@
 \alias{shannon_entropy}
 \title{Shannon's entropy}
 \usage{
-shannon_entropy(input, level = c("word", "letter"))
+shannon_entropy(
+  input,
+  level = c("word", "letter"),
+  token = c("regex", "transformers")
+)
 }
 \arguments{
 \item{input}{Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)}
 
 \item{level}{"word" or "letter"}
+
+\item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
 }
 \value{
 Entropy in bits
