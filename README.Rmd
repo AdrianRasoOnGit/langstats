@@ -90,6 +90,11 @@ Since `langstats v0.2.0`, the package comes with an internal function that force
 
 - **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and stored in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readability that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results. Since the version `v0.4.0`, the function offers a BERT-powered tokeniser, that can be accessed through the argument `token = c("regex", "transformers")`. If not defined, `input_handling()` selects the regex based tokeniser of previous versions, which is usually faster and still satisfactory most of the times.
 
+Also, since `langstats v0.5.0`, the package allows its users to automatically plot results with a smart plot function powered by `ggplot2`. We introduce it below:
+
+- **Plotting with automated configuration** (`plot_ls(input)`): This function automatically plot results regardless of the origin of the data, as long as it has been returned from a native function of `langstats`.
+
+
   Besides, the package comes with some example data to try the features
   of this resource. Remember to type
   `data(“name_of_the_data_here”)` before using it! The datasets

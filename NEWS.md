@@ -28,3 +28,11 @@ What's new?
 * `input_handling()` now supports neural tokenisation using HuggingFace's BERT tokenizer via `reticulate`. Use `token = "transformer"` for more accurate, context-aware word splitting (e.g., handling subwords, contractions, punctuation). By the way, the default remains `token = "regex"` for speed use.
 
 * With this new feature, it comes a new necessity: importing `transformers` and `torch`. The package automatically loads Python dependencies via `reticulate::import()`. Users must install `transformers` and `torch` in a 64-bit Python environment!
+
+# langstats v0.5.0
+
+What's new? 
+
+* Smart plotting has landed to `langstats`! We introduce `plot_ls()`, a universal visualizer that automatically detects and plots results from `zipf()`, `heaps()`, `ngrams()`, `collocation_g2()`, and information-theoretic measures like `shannon_entropy()` and `gain()`. Plots configuration is automated and functional, so no worries if you are a bit clumsy with plots!
+
+* Minor fixes in documentation from the previous version.

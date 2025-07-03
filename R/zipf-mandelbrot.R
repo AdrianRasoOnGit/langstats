@@ -5,6 +5,8 @@
 #'
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
 #' @param level As in other functions in langstats, allows the user to define the linguistic layer we aim to study, whether it is word, or letter
+#' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#'
 #' @return List with the adjusted parameters, that is: alpha, beta, and C. Furthermore, original data are provided
 #' @examples
 #' # Example with multiple texts

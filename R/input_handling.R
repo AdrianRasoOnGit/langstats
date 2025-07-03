@@ -13,6 +13,9 @@
 #' \code{"frequency"} exists, it is normalized and returned. If only text is provided, the function tokenizes
 #' using a regular expression based on the \code{level} argument, and completes the frequency index with a calculation on the frequencies of tokens. We plan to replace this search term procedure to a more functional one in next updates!
 #'
+#' @importFrom reticulate import
+
+#'
 #' @examples
 #' text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
 #' input_handling(text, level = "word")
@@ -32,8 +35,10 @@ input_handling <- function(input, level = c("word", "letter"), token = c("regex"
     tokenizer <- NULL
     function() {
       if (is.null(tokenizer)) {
-        library(reticulate)
-        transformers <- import("transformers")
+        if (!requireNamespace("reticulate", quietly = TRUE)) {
+          stop("Caution! The 'reticulate' package is here required, in order to convey the transformer tokenisation. Please, consider installing it, or defaulting the tokenisation process to the regex-based alternative!")
+        }
+        transformers <- reticulate::import("transformers")
         tokenizer <<- transformers$AutoTokenizer$from_pretrained("bert-base-uncased")
       }
       tokenizer

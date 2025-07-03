@@ -123,6 +123,15 @@ mention it here.
   versions, which is usually faster and still satisfactory most of the
   times.
 
+Also, since `langstats v0.5.0`, the package allows its users to
+automatically plot results with a smart plot function powered by
+`ggplot2`. We introduce it below:
+
+- **Plotting with automated configuration** (`plot_ls(input)`): This
+  function automatically plot results regardless of the origin of the
+  data, as long as it has been returned from a native function of
+  `langstats`.
+
   Besides, the package comes with some example data to try the features
   of this resource. Remember to type `data(“name_of_the_data_here”)`
   before using it! The datasets provided are:
