@@ -44,3 +44,9 @@ What's new?
 * TF-IDF tables! As convenient as they are, `langstats` now offers TF-IDF support through three quite self-explanatory functions: `tf()` (which provides just the TF), `idf()` (which only returns the IDF), and `tf-idf()` (the best of both worlds).
 
 * Tests have been added to check the behavior of the functions! It is important to note that not all functions have received a test.R file, since some of them will soon enjoy some improvements.
+
+# langstats v0.7.0
+
+What's new?
+
+* Targeted Shannon's entropy calculations! Given a string (whether its contents are a character, a word, or a sentence), we can now obtain the entropy of it in an input with paramater `target`. If not provided, `shannon_entropy()` behaves as usual!

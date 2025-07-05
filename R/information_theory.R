@@ -5,6 +5,7 @@
 #' @param input Text vector, whose elements can be phrases or documents, or data frame, for example, from the output of ngram(). Bear in mind that, as it has been defined, words must be on the first column! (Not anymore, input_handling() has acquired smart features!)
 #' @param level "word" or "letter"
 #' @param token It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.
+#' @param target Optional. A specific word, letter, or phrase whose entropy contribution should be returned. If NULL, total entropy is returned.
 #'
 #' @return Entropy in bits
 #' @examples
@@ -18,7 +19,7 @@
 #'
 #' @export
 
-shannon_entropy <- function(input, level = c("word", "letter"), token = c("regex", "transformers")) {
+shannon_entropy <- function(input, level = c("word", "letter"), token = c("regex", "transformers"), target = NULL) {
   level <- match.arg(level)
   token <- match.arg(token)
 
@@ -28,6 +29,18 @@ shannon_entropy <- function(input, level = c("word", "letter"), token = c("regex
   # We extract from the data frame that outputs input_handling() tokens and probabilities
   elements <- input$elements
   probs <- input$probs
+
+  # Target entropy!
+  if (!is.null(target)) {
+    if (!(target %in% names(probs))) {
+      warning("Target not found in input. Returning NA.")
+      return(NA)
+    }
+
+    # Return the entropy contribution of the specific target
+    p <- probs[target]
+    return(-p * log2(p))
+  }
 
   # Shannon entropy formula
    return(-sum(probs * log2(probs)))

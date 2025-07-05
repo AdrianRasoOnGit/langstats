@@ -7,7 +7,8 @@
 shannon_entropy(
   input,
   level = c("word", "letter"),
-  token = c("regex", "transformers")
+  token = c("regex", "transformers"),
+  target = NULL
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ shannon_entropy(
 \item{level}{"word" or "letter"}
 
 \item{token}{It declares the procedure used to extract the tokens, whether it is based on regex on neural BERT transformer model.}
+
+\item{target}{Optional. A specific word, letter, or phrase whose entropy contribution should be returned. If NULL, total entropy is returned.}
 }
 \value{
 Entropy in bits
