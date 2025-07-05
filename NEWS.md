@@ -49,4 +49,4 @@ What's new?
 
 What's new?
 
-* Targeted Shannon's entropy calculations! Given a string (whether its contents are a character, a word, or a sentence), we can now obtain the entropy of it in an input with paramater `target`. If not provided, `shannon_entropy()` behaves as usual!
+* Targeted Shannon's entropy calculations! Given a string (whether its contents are a character, a word, or a sentence), we can now obtain the entropy of the linguistic element in an input with parameter `target`. If not provided, `shannon_entropy()` behaves as usual!
