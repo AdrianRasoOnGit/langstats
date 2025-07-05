@@ -86,6 +86,16 @@ the following functions:
 
 - **$G^2$ test and contingency tables (`g2(input)`) **: It performs a log-likelihood ratio test (that is, a $G^2$ test), that it is called from other functions. This is an internal quite straightforward function in the package, it's real use can be found in `collocation_g2()`, which supports this very function.
 
+- **Term frequency and inverse document frequency** (`tf(input)`, `idf(input)`, `tf_idf(input)`):  
+  With these three functions users are able to gain insight on lexical distributions with a quite standard and enlightening measure: TF-IDF — not to be confused with other IDFs, whose systematic violence and repression bear no resemblance to Inverse Document Frequencies (luckily!). `tf()` computes the frequency of each token within individual documents. `idf()` captures how rare a token is across all documents in the corpus, using the formula  
+  $$
+  \text{idf}(t) = \log\left(\frac{N}{n_t}\right)
+  $$  
+  where $N$ is the total number of documents and $n_t$ is the number of documents that contain term $t$. Finally, `tf_idf()` combines the two measures to emphasize terms that are both frequent in a specific document and relatively rare in the corpus:  
+  $$
+  \text{tf\_idf}(t, d) = \text{tf}(t, d) \times \text{idf}(t)
+  $$
+
 Since `langstats v0.2.0`, the package comes with an internal function that forces an unified treatment of inputs. That function is named, quite in a straightforward way, `input_handling()`. This is of no real use for the user, as it is pretty internal, but out of transparency I mention it here.
 
 - **Input handling** (`input_handling(input)`): Given a text or a data frame, it detects or calculates frequencies from tokens and also probability values. These are relevant data for the functions of the package and are obtained and stored in a universal manner, so errors and implementations are swifter and safer. It returns a list, which is way faster than a data frame to manipulate. The readability that we lose with the list is trivial, since that list will be of internal use and the user will always have at hand a data frame output to assess the data and results. Since the version `v0.4.0`, the function offers a BERT-powered tokeniser, that can be accessed through the argument `token = c("regex", "transformers")`. If not defined, `input_handling()` selects the regex based tokeniser of previous versions, which is usually faster and still satisfactory most of the times.

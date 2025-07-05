@@ -36,3 +36,11 @@ What's new?
 * Smart plotting has landed to `langstats`! We introduce `plot_ls()`, a universal visualizer that automatically detects and plots results from `zipf()`, `heaps()`, `ngrams()`, `collocation_g2()`, and information-theoretic measures like `shannon_entropy()` and `gain()`. Plots configuration is automated and functional, so no worries if you are a bit clumsy with plots!
 
 * Minor fixes in documentation from the previous version.
+
+# langstats v0.6.0
+
+What's new?
+
+* TF-IDF tables! As convenient as they are, `langstats` now offers TF-IDF support through three quite self-explanatory functions: `tf()` (which provides just the TF), `idf()` (which only returns the IDF), and `tf-idf()` (the best of both worlds).
+
+* Tests have been added to check the behavior of the functions! It is important to note that not all functions have received a test.R file, since some of them will soon enjoy some improvements.

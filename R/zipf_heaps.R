@@ -65,6 +65,8 @@ zipf <- function(input, level = c("word", "letter"), token = c("regex", "transfo
 #' data(heart_of_darkness)
 #' heaps(heart_of_darkness)
 #'
+#'#' @importFrom ggplot2 ggplot aes geom_point geom_col geom_text geom_line scale_x_log10 scale_y_log10 labs theme_minimal coord_flip
+#'
 #' @export
 heaps <- function(input, level = c("word", "letter"),token = c("regex", "transformers")) {
   level <- match.arg(level)

@@ -6,7 +6,7 @@
 #' @param top_n Integer. How many top items to plot for frequency-based tables
 #' @param ... Additional arguments (not used yet)
 #'
-#' @importFrom ggplot2 ggplot aes geom_point geom_col geom_text scale_x_log10 scale_y_log10 labs theme_minimal coord_flip
+#'@importFrom ggplot2 ggplot aes geom_point geom_col geom_text geom_line scale_x_log10 scale_y_log10 labs theme_minimal coord_flip
 #'
 #' @return A ggplot2 plot
 #' @export

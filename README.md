@@ -102,6 +102,26 @@ functions:
   function in the package, it’s real use can be found in
   `collocation_g2()`, which supports this very function.
 
+- **Term frequency and inverse document frequency** (`tf(input)`,
+  `idf(input)`, `tf_idf(input)`):  
+  With these three functions users are able to gain insight on lexical
+  distributions with a quite standard and enlightening measure: TF-IDF —
+  not to be confused with other IDFs, whose systematic violence and
+  repression bear no resemblance to Inverse Document Frequencies
+  (luckily!). `tf()` computes the frequency of each token within
+  individual documents. `idf()` captures how rare a token is across all
+  documents in the corpus, using the formula  
+  $$
+  \text{idf}(t) = \log\left(\frac{N}{n_t}\right)
+  $$  
+  where $N$ is the total number of documents and $n_t$ is the number of
+  documents that contain term $t$. Finally, `tf_idf()` combines the two
+  measures to emphasize terms that are both frequent in a specific
+  document and relatively rare in the corpus:  
+  $$
+  \text{tf\_idf}(t, d) = \text{tf}(t, d) \times \text{idf}(t)
+  $$
+
 Since `langstats v0.2.0`, the package comes with an internal function
 that forces an unified treatment of inputs. That function is named,
 quite in a straightforward way, `input_handling()`. This is of no real
