@@ -9,23 +9,23 @@ tf(input, level = c("word", "letter"), token = c("regex", "transformer"))
 \arguments{
 \item{input}{A text vector or a data frame, either raw text or a tidy token-frequency structure from this package or another source}
 
-\item{level}{The level of analysis: currently accepts \code{"word"} or \code{"letter"}}
+\item{level}{The level of analysis: currently accepts "word" or "letter"}
 
-\item{token}{The method for token extraction: a \code{"regex"}-based approach or a neural \code{"transformer"} model (BERT)}
+\item{token}{The method for token extraction: a "regex"-based approach or a neural "transformer" model (BERT)}
 }
 \value{
-A data frame with the following structure: \code{document}The numeric index of the document. \code{term} The token basically. \code{tf} The frequency of that term within the document (the count!).
+A data frame with the following structure \link{TODO}
 }
 }
 \description{
-Through \code{tf()}, we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages \code{input_handling()} to standardise various formats of text and data, making it fully compatible with the langstats pipeline.
+Through TODO we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages TODO
 }
 \details{
 If the input is a character vector, it is interpreted as a collection of documents. Each element will be tokenised (depending on the level and token method) and a frequency table will be created for each. If a data frame is passed, it is parsed to extract already available token-frequency information.
 
-Internally, this function makes use of \code{input_handling()} to support both raw and pre-processed inputs. It identifies tokens and their associated frequencies for each document or input unit. For text inputs, a bag-of-words representation is constructed. For data frames, it identifies the most probable token and frequency columns. The function ensures lowercasing and normalization where applicable.
+Internally, this function makes use of \link{TODO}
 
-This function is useful when term-level distribution is needed as a basis for more complex calculations, such as inverse document frequency (see \code{idf()}) or full tf-idf scores (see \code{tf_idf()}).
+This function is useful when term-level distribution is \link{TODO}
 }
 \examples{
 text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
@@ -34,7 +34,4 @@ tf(text, level = "word")
 df <- data.frame(word = c("model", "relational", "Codd"), frequency = c(10, 3, 2))
 tf(df, level = "word")
 
-}
-\seealso{
-\code{\link{input_handling}}, \code{\link{idf}}, \code{\link{tf_idf}}
 }

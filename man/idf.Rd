@@ -9,25 +9,15 @@ idf(input, level = c("word", "letter"), token = c("regex", "transformer"))
 \arguments{
 \item{input}{A text vector (multiple documents), or a data frame of tokens and frequencies}
 
-\item{level}{The level of linguistic analysis: can be \code{"word"} or \code{"letter"}}
+\item{level}{The level of linguistic analysis:\link{TODO}}
 
-\item{token}{The tokenisation method: either \code{"regex"} or \code{"transformer"} (BERT-based)}
+\item{token}{The tokenisation method: either \link{TODO} (BERT-based)}
 }
 \value{
-A data frame with the following columns: \code{term} The token, basically.
-\code{{idf} The inverse document frequency score, calculated as \code{log(n_documents / document_frequency)} (as usual).
-}
+A data frame with the following columns: \link{TODO}
 }
 \description{
-The function \code{idf()} calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
-}
-\details{
-It takes as input either raw texts or data frames already containing token-frequency information. Behind the scenes, it reuses \code{input_handling()} to extract or verify the tokens per document and then computes document frequency counts before applying the standard IDF formula.
-
-The IDF score increases with term rarity across documents. Terms appearing in every document will have an IDF of zero, while terms unique to one document will have the highest scores.
-This function forms the second step in a classic TF-IDF pipeline. It is most effective when used alongside \code{tf()} or directly within \code{tf_idf()}.
-
-Like other core functions in langstats, this tool is robust to multiple input formats and automatically processes text or table-based inputs.
+The function TODO calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
 }
 \examples{
 text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
@@ -36,7 +26,4 @@ idf(text, level = "word")
 df <- data.frame(word = c("model", "relational", "Codd"), frequency = c(10, 3, 2))
 idf(df, level = "word")
 
-}
-\seealso{
-\code{\link{tf}}, \code{\link{tf_idf}}, \code{\link{input_handling}}
 }

@@ -1,6 +1,6 @@
 #' Term Frequency (TF)
 #'
-#' Through {tf()}, we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages {input_handling()} to standardise various formats of text and data, making it fully compatible with the langstats pipeline.
+#' Through TODO we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages TODO
 #'
 #' If the input is a character vector, it is interpreted as a collection of documents. Each element will be tokenised (depending on the level and token method) and a frequency table will be created for each. If a data frame is passed, it is parsed to extract already available token-frequency information.
 #'
@@ -58,22 +58,14 @@ tf <- function(input, level = c("word", "letter"), token = c("regex", "transform
 
 #' Inverse Document Frequency (IDF): measuring informational uniqueness
 #'
-#' The function {idf()} calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
+#' The function TODO calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
 #'
-#' It takes as input either raw texts or data frames already containing token-frequency information. Behind the scenes, it reuses {input_handling()} to extract or verify the tokens per document and then computes document frequency counts before applying the standard IDF formula.
 #'
 #' @param input A text vector (multiple documents), or a data frame of tokens and frequencies
 #' @param level The level of linguistic analysis:[TODO]
 #' @param token The tokenisation method: either [TODO] (BERT-based)
 #'
 #' @return A data frame with the following columns: [TODO]
-#' }
-#'
-#' @details
-#' The IDF score increases with term rarity across documents. Terms appearing in every document will have an IDF of zero, while terms unique to one document will have the highest scores.
-#' This function forms the second step in a classic TF-IDF pipeline. It is most effective when used alongside tf()} or directly within tf_idf()}.
-#'
-#' Like other core functions in langstats, this tool is robust to multiple input formats and automatically processes text or table-based inputs.
 #'
 #' @examples
 #' text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
@@ -99,10 +91,9 @@ idf <- function(input, level = c("word", "letter"), token = c("regex", "transfor
 #'
 #' The function  calculates the TF-IDF score for each linguistic element across a set of documents. It combines two key components: term frequency (TF) and inverse document frequency (IDF), producing a score that reflects both the importance of a term within a document and its uniqueness across the full corpus.
 #'
-#' This function supports both raw text and structured token-frequency data frames, ensuring compatibility with the broader langstats pipeline. Internally, it delegates preprocessing to {input_handling()}, followed by calls to {tf()} and {idf()} to extract the necessary components for TF-IDF calculation.
 #'
 #' @param input A vector of character strings (one per document), or a data frame of tokens and their frequencies
-#' @param level The level of linguistic granularity: currently supports {"word"} or {"letter"}
+#' @param level The level of linguistic granularity: TODO
 #' @param token The method for tokenisation
 #'
 #' @return A data frame with the following columns: (1) document, (2) term, (3) tf, (4) idf, and (5) tf_idf
