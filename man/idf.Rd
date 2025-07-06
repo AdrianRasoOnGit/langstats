@@ -9,15 +9,15 @@ idf(input, level = c("word", "letter"), token = c("regex", "transformer"))
 \arguments{
 \item{input}{A text vector (multiple documents), or a data frame of tokens and frequencies}
 
-\item{level}{The level of linguistic analysis:\link{TODO}}
+\item{level}{The level of linguistic analysis:}
 
-\item{token}{The tokenisation method: either \link{TODO} (BERT-based)}
+\item{token}{The tokenisation method: either  (BERT-based)}
 }
 \value{
-A data frame with the following columns: \link{TODO}
+A data frame with the following columns:
 }
 \description{
-The function TODO calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
+The function  calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
 }
 \examples{
 text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")

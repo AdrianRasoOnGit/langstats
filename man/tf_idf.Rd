@@ -9,7 +9,7 @@ tf_idf(input, level = c("word", "letter"), token = c("regex", "transformer"))
 \arguments{
 \item{input}{A vector of character strings (one per document), or a data frame of tokens and their frequencies}
 
-\item{level}{The level of linguistic granularity: TODO}
+\item{level}{The level of linguistic granularity:}
 
 \item{token}{The method for tokenisation}
 }

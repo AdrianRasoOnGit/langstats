@@ -1,6 +1,6 @@
 #' Term Frequency (TF)
 #'
-#' Through TODO we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages TODO
+#' Through  we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages
 #'
 #' If the input is a character vector, it is interpreted as a collection of documents. Each element will be tokenised (depending on the level and token method) and a frequency table will be created for each. If a data frame is passed, it is parsed to extract already available token-frequency information.
 #'
@@ -8,14 +8,9 @@
 #' @param level The level of analysis: currently accepts "word" or "letter"
 #' @param token The method for token extraction: a "regex"-based approach or a neural "transformer" model (BERT)
 #'
-#' @return A data frame with the following structure [TODO]
-#' }
+#' @return A data frame with the following structure
 #'
-#' @details
-#' Internally, this function makes use of [TODO]
-#'
-#' This function is useful when term-level distribution is [TODO]
-#'
+
 #'
 #' @examples
 #' text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
@@ -58,14 +53,14 @@ tf <- function(input, level = c("word", "letter"), token = c("regex", "transform
 
 #' Inverse Document Frequency (IDF): measuring informational uniqueness
 #'
-#' The function TODO calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
+#' The function  calculates the inverse document frequency (IDF) for each linguistic element (token or character) across a collection of documents. The IDF metric helps to quantify how unique or informative a term is, relative to its distribution in the entire corpus.
 #'
 #'
 #' @param input A text vector (multiple documents), or a data frame of tokens and frequencies
-#' @param level The level of linguistic analysis:[TODO]
-#' @param token The tokenisation method: either [TODO] (BERT-based)
+#' @param level The level of linguistic analysis:
+#' @param token The tokenisation method: either  (BERT-based)
 #'
-#' @return A data frame with the following columns: [TODO]
+#' @return A data frame with the following columns:
 #'
 #' @examples
 #' text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")
@@ -93,7 +88,7 @@ idf <- function(input, level = c("word", "letter"), token = c("regex", "transfor
 #'
 #'
 #' @param input A vector of character strings (one per document), or a data frame of tokens and their frequencies
-#' @param level The level of linguistic granularity: TODO
+#' @param level The level of linguistic granularity:
 #' @param token The method for tokenisation
 #'
 #' @return A data frame with the following columns: (1) document, (2) term, (3) tf, (4) idf, and (5) tf_idf

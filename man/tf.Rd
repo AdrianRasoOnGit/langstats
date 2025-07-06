@@ -14,18 +14,13 @@ tf(input, level = c("word", "letter"), token = c("regex", "transformer"))
 \item{token}{The method for token extraction: a "regex"-based approach or a neural "transformer" model (BERT)}
 }
 \value{
-A data frame with the following structure \link{TODO}
-}
+A data frame with the following structure
 }
 \description{
-Through TODO we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages TODO
+Through  we compute the term frequency (TF) of linguistic elements across documents or structured input tables. This function leverages
 }
 \details{
 If the input is a character vector, it is interpreted as a collection of documents. Each element will be tokenised (depending on the level and token method) and a frequency table will be created for each. If a data frame is passed, it is parsed to extract already available token-frequency information.
-
-Internally, this function makes use of \link{TODO}
-
-This function is useful when term-level distribution is \link{TODO}
 }
 \examples{
 text <- c("Codd is English", "Codd studied in Oxford", "Codd proposed the relational model in 1970")

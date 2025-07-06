@@ -50,3 +50,10 @@ What's new?
 What's new?
 
 * Targeted Shannon's entropy calculations! Given a string (whether its contents are a character, a word, or a sentence), we can now obtain the entropy of the linguistic element in an input with parameter `target`. If not provided, `shannon_entropy()` behaves as usual!
+
+
+# langstats v0.8.0
+
+What's new?
+
+* Networks environment started! We have begun the development of visualization tools through networks.

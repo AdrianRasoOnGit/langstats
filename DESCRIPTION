@@ -1,6 +1,6 @@
 Package: langstats
 Title: langstats
-Version: 0.7.0
+Version: 0.8.0
 Authors@R: 
     person("Adrián", "Raso", , "adrraso@ucm.es", role = c("aut", "cre"))
 Description: langstats provides a comprehensive environment for the study of statistical properties and laws in natural language, through seminal measures such as Zipf's and Heaps's law, or information theory devices. Its main objective is to offer to natural language scientists an out-of-the-box ecosystem to research linguistic data in an accessible quantitative way.
@@ -14,7 +14,9 @@ LazyData: true
 VignetteBuilder: knitr
 Imports:
     ggplot2,
-    reticulate
+    reticulate,
+    igraph,
+    ggraph
 Suggests: 
     knitr,
     rmarkdown,
